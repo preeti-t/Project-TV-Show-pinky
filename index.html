@@ -10,22 +10,22 @@
 
   <body>
     <header>
-  <input
-    type="text"
-    id="searchInput"
-    placeholder="Search episodes..."
-  />
+      <input type="text" id="searchInput" placeholder="Search episodes..." />
 
-  <select id="episodeSelect">
-    <option value="">Jump to episode...</option>
-  </select>
+      <select id="episodeSelect">
+        <option value="">Jump to episode...</option>
+      </select>
 
-  <p id="episodeCount"></p>
-</header>
+      <p id="episodeCount"></p>
+    </header>
+
+    <div id="loadingSpinner" style="display: none">
+      <p>Loading episodes...</p>
+    </div>
+
     <div id="root"></div>
 
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
-    <script src="episodes.js"></script>
 
     <!-- Loads YOUR javascript code -->
     <script src="script.js"></script>
