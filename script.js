@@ -1,15 +1,31 @@
-//You can edit ALL of the code here
 let allEpisodes = [];
 
 function setup() {
-  allEpisodes = getAllEpisodes();
-
-  setupSearch();
-  setupEpisodeSelect(allEpisodes);
-  displayEpisodes(allEpisodes);
+  fetchData();
 }
 
-/* Rendering Episodes */
+async function fetchData() {
+  try {
+    document.getElementById("root").innerHTML = "<p>Loading episodes...</p>";
+
+    const response = await fetch("https://api.tvmaze.com/shows/82/episodes");
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch data from the API");
+    }
+
+    const data = await response.json();
+    allEpisodes = data;
+
+    displayEpisodes(allEpisodes);
+    setupSearch();
+    setupEpisodeSelect(allEpisodes);
+  } catch (error) {
+    document.getElementById(
+      "root"
+    ).innerHTML = `<p>Error: ${error.message}. Please try again later.</p>`;
+  }
+}
 
 function displayEpisodes(episodes) {
   const rootElem = document.getElementById("root");
@@ -19,6 +35,7 @@ function displayEpisodes(episodes) {
     rootElem.appendChild(createEpisodeCard(episode));
   });
 
+  // Update the episode count display
   updateEpisodeCount(episodes.length, allEpisodes.length);
 }
 
@@ -31,16 +48,16 @@ function createEpisodeCard(episode) {
 
   episodeCard.innerHTML = `
     <h2>${episode.name} (${episodeCode})</h2>
-    <img src="${episode.image.medium}" alt="${episode.name}">
+    <img src="${episode.image ? episode.image.medium : ""}" alt="${
+    episode.name
+  }">
     <div class="summary">
-      ${episode.summary}
+      ${episode.summary ? episode.summary : "No summary available."}
     </div>
   `;
 
   return episodeCard;
 }
-
-/*  Search Functionality */
 
 function setupSearch() {
   const searchInput = document.getElementById("searchInput");
@@ -48,6 +65,7 @@ function setupSearch() {
   searchInput.addEventListener("input", () => {
     const searchTerm = searchInput.value.toLowerCase();
 
+    // Filter the episodes based on the search input
     const filteredEpisodes = allEpisodes.filter((episode) => {
       return (
         episode.name.toLowerCase().includes(searchTerm) ||
@@ -58,8 +76,6 @@ function setupSearch() {
     displayEpisodes(filteredEpisodes);
   });
 }
-
-/*  Episode Selector */
 
 function setupEpisodeSelect(episodes) {
   const select = document.getElementById("episodeSelect");
@@ -84,7 +100,6 @@ function setupEpisodeSelect(episodes) {
   });
 }
 
-
 function formatEpisodeCode(season, number) {
   return `S${String(season).padStart(2, "0")}E${String(number).padStart(
     2,
@@ -96,7 +111,5 @@ function updateEpisodeCount(shown, total) {
   const countElem = document.getElementById("episodeCount");
   countElem.textContent = `Displaying ${shown} / ${total} episodes`;
 }
-
-/* Start App */
 
 window.onload = setup;
