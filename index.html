@@ -10,6 +10,11 @@
 
   <body>
     <header>
+      <!-- NEW: Show selector -->
+      <select id="showSelect">
+        <option value="">Select a show...</option>
+      </select>
+
       <input type="text" id="searchInput" placeholder="Search episodes..." />
 
       <select id="episodeSelect">
@@ -20,14 +25,11 @@
     </header>
 
     <div id="loadingSpinner" style="display: none">
-      <p>Loading episodes...</p>
+      <p>Loading data...</p>
     </div>
 
     <div id="root"></div>
 
-    <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
-
-    <!-- Loads YOUR javascript code -->
     <script src="script.js"></script>
   </body>
 </html>
