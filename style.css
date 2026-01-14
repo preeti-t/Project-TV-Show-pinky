@@ -39,6 +39,10 @@ header select {
   min-width: 260px;
 }
 
+header select:first-child {
+  min-width: 220px;
+}
+
 #episodeCount {
   font-size: 14px;
   color: #555;
